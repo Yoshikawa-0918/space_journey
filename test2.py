@@ -13,21 +13,28 @@ import xml.etree.ElementTree as ET
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect(('localhost', 10500))
 
-# LED_PIN1:音声認識用 LED_PIN2:ボタン用
+# 天板用のモーターに使用するピン
 MOT_PIN1 = 25
 MOT_PIN2 = 24
+# くちばしのモーターに使用するピン
 MOT_PIN3 = 12
 MOT_PIN4 = 16
+# プラネタリウムを上下させるモーターに使用するピン
+MOT_PIN5 = 13
+MOT_PIN6 = 6
+# 各LEDにしようするピン
 SETUP_LED = 17
 ERROR_LED = 27
 BUTTON_ERROR = 26
 PLANETARIUM_LED = 19
 
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(MOT_PIN1,GPIO.OUT)
-GPIO.setup(MOT_PIN2,GPIO.OUT)
+GPIO.setup(MOT_PIN1, GPIO.OUT)
+GPIO.setup(MOT_PIN2, GPIO.OUT)
 GPIO.setup(MOT_PIN3, GPIO.OUT)
 GPIO.setup(MOT_PIN4, GPIO.OUT)
+GPIO.setup(MOT_PIN5, GPIO.OUT)
+GPIO.setup(MOT_PIN6, GPIO.OUT)
 GPIO.setup(SETUP_LED, GPIO.OUT)
 GPIO.setup(ERROR_LED, GPIO.OUT)
 GPIO.setup(BUTTON_ERROR, GPIO.OUT)
@@ -147,6 +154,7 @@ class ScanDelegate(DefaultDelegate):
                         print('Num: ', seq)
                         if(data == 0):
                             print('Button off')
+                            # くちばしのモーターを反転する
                             GPIO.output(MOT_PIN3,0)
                             GPIO.output(MOT_PIN4,1)
                             for i in range(5):
@@ -154,13 +162,23 @@ class ScanDelegate(DefaultDelegate):
                                 sleep(1)
                             GPIO.output(MOT_PIN3,0)
                             GPIO.output(MOT_PIN4,0)
-                            GPIO.output(PLANETARIUM_LED,1)
+
+                            # プラネタリウムを上下するモーターを反転する
+                            GPIO.output(MOT_PIN5,0)
+                            GPIO.output(MOT_PIN6,1)
+                            for i in range(60):
+                                print(i)
+                                sleep(1)
+                            GPIO.output(MOT_PIN5,1)
+                            GPIO.output(MOT_PIN6,0)
+                            GPIO.output(PLANETARIUM_LED,0)
                             print("Button off 終了")
                         elif(data == 1):
                             print('Button On')
                             event1.set()
                             print(event1.is_set())
                             GPIO.output(PLANETARIUM_LED,0)
+                            # くちばしのモーターを正転する
                             GPIO.output(MOT_PIN3,1)
                             GPIO.output(MOT_PIN4,0)
                             for i in range(5):
@@ -168,6 +186,16 @@ class ScanDelegate(DefaultDelegate):
                                 sleep(1)
                             GPIO.output(MOT_PIN3,0)
                             GPIO.output(MOT_PIN4,0)
+
+                            # プラネタリウムを上下するモーターを正転する
+                            GPIO.output(MOT_PIN5,1)
+                            GPIO.output(MOT_PIN6,0)
+                            for i in range(60):
+                                print(i)
+                                sleep(1)
+                            GPIO.output(MOT_PIN5,1)
+                            GPIO.output(MOT_PIN6,0)
+                            GPIO.output(PLANETARIUM_LED,1)
                             event1.clear()
                             print(event1.is_set())
                             print("Button On 終了")
@@ -236,6 +264,8 @@ if __name__ == "__main__":
     GPIO.output(MOT_PIN2,0)
     GPIO.output(MOT_PIN3,0)
     GPIO.output(MOT_PIN4,0) 
+    GPIO.output(MOT_PIN5,0)
+    GPIO.output(MOT_PIN6,0)
     GPIO.output(SETUP_LED,0) 
     GPIO.output(ERROR_LED,0) 
     GPIO.output(BUTTON_ERROR,0) 
