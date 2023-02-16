@@ -21,7 +21,7 @@ MOT_PIN4 = 16
 SETUP_LED = 17
 ERROR_LED = 27
 BUTTON_ERROR = 26
-#LIM_SWITCH = 19
+PLANETARIUM_LED = 19
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(MOT_PIN1,GPIO.OUT)
@@ -31,7 +31,7 @@ GPIO.setup(MOT_PIN4, GPIO.OUT)
 GPIO.setup(SETUP_LED, GPIO.OUT)
 GPIO.setup(ERROR_LED, GPIO.OUT)
 GPIO.setup(BUTTON_ERROR, GPIO.OUT)
-#GPIO.setUP(LIM_SWITCH, GPIO.IN)
+GPIO.setUP(PLANETARIUM_LED, GPIO.OUT)
 
 
 player = vlc.MediaListPlayer()
@@ -77,7 +77,7 @@ class Signal(threading.Thread):
                                     # ここでドライブ基板に信号を送る
                                     GPIO.output(MOT_PIN1,1)
                                     GPIO.output(MOT_PIN2,0)
-                                    for i in range(10):
+                                    for i in range(5):
                                         print(i)
                                         sleep(1)
                                     GPIO.output(MOT_PIN1,0)
@@ -93,7 +93,7 @@ class Signal(threading.Thread):
                                     # ここでドライブ基板に信号を送る
                                     GPIO.output(MOT_PIN1,0)
                                     GPIO.output(MOT_PIN2,1)
-                                    for i in range(10):
+                                    for i in range(5):
                                         print(i)
                                         sleep(1)
                                     GPIO.output(MOT_PIN1,0)
@@ -149,19 +149,21 @@ class ScanDelegate(DefaultDelegate):
                             print('Button off')
                             GPIO.output(MOT_PIN3,0)
                             GPIO.output(MOT_PIN4,1)
-                            for i in range(10):
+                            for i in range(5):
                                 print(i)
                                 sleep(1)
                             GPIO.output(MOT_PIN3,0)
                             GPIO.output(MOT_PIN4,0)
+                            GPIO.output(PLANETARIUM_LED,1)
                             print("Button off 終了")
                         elif(data == 1):
                             print('Button On')
                             event1.set()
                             print(event1.is_set())
+                            GPIO.output(PLANETARIUM_LED,0)
                             GPIO.output(MOT_PIN3,1)
                             GPIO.output(MOT_PIN4,0)
-                            for i in range(10):
+                            for i in range(5):
                                 print(i)
                                 sleep(1)
                             GPIO.output(MOT_PIN3,0)
@@ -184,9 +186,9 @@ class Button(threading.Thread):
                     except Exception as e:
                         sleep(0.5)
                         print("clearでエラーが発生しました：",e)
-                        GPIO.output(BUTTON_ERROR,1)
-                        sleep(0.5)
                         GPIO.output(BUTTON_ERROR,0)
+                        sleep(0.5)
+                        GPIO.output(BUTTON_ERROR,1)
                     else:
                         try:
                             scanner.start(passive=True)
@@ -194,9 +196,9 @@ class Button(threading.Thread):
                         except Exception as e:
                             sleep(0.5)
                             print("startでエラーが発生しました：",e)
-                            GPIO.output(BUTTON_ERROR,1)
-                            sleep(0.5)
                             GPIO.output(BUTTON_ERROR,0)
+                            sleep(0.5)
+                            GPIO.output(BUTTON_ERROR,1)
                         else:
                             try:
                                 scanner.process(1.0)
@@ -204,9 +206,9 @@ class Button(threading.Thread):
                             except Exception as e:
                                 sleep(0.5)
                                 print("processでエラーが発生しました：",e)
-                                GPIO.output(BUTTON_ERROR,1)
-                                sleep(0.5)
                                 GPIO.output(BUTTON_ERROR,0)
+                                sleep(0.5)
+                                GPIO.output(BUTTON_ERROR,1)
                             else:
                                 try:
                                     scanner.stop()
@@ -215,9 +217,9 @@ class Button(threading.Thread):
                                 except Exception as e:
                                     sleep(0.5)
                                     print("stopでエラーが発生しました：",e)
-                                    GPIO.output(BUTTON_ERROR,1)
-                                    sleep(0.5)
                                     GPIO.output(BUTTON_ERROR,0)
+                                    sleep(0.5)
+                                    GPIO.output(BUTTON_ERROR,1)
                                 else:
                                     print('スキャンしました')
                 else:
@@ -237,7 +239,7 @@ if __name__ == "__main__":
     GPIO.output(SETUP_LED,0) 
     GPIO.output(ERROR_LED,0) 
     GPIO.output(BUTTON_ERROR,0) 
-    #GPIO.input(LIM_SWITCH, 1) 
+    GPIO.output(PLANETARIUM_LED,0)
     try:
         s = threading.Thread(target=Signal.signal)
         b = threading.Thread(target=Button.button)
@@ -247,8 +249,9 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         GPIO.clean()
     except Exception :
+        GPIO.output(SETUP_LED,0)
         GPIO.output(ERROR_LED,1)
     else:
         GPIO.output(SETUP_LED,1)
-        sleep(3)
-        GPIO.output(SETUP_LED,0)
+        GPIO.output(BUTTON_ERROR,1)
+        GPIO.output(ERROR_LED,1)
