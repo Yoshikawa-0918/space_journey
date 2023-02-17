@@ -169,7 +169,7 @@ class ScanDelegate(DefaultDelegate):
                             for i in range(60):
                                 print(i)
                                 sleep(1)
-                            GPIO.output(MOT_PIN5,1)
+                            GPIO.output(MOT_PIN5,0)
                             GPIO.output(MOT_PIN6,0)
                             GPIO.output(PLANETARIUM_LED,0)
                             print("Button off 終了")
@@ -193,7 +193,7 @@ class ScanDelegate(DefaultDelegate):
                             for i in range(60):
                                 print(i)
                                 sleep(1)
-                            GPIO.output(MOT_PIN5,1)
+                            GPIO.output(MOT_PIN5,0)
                             GPIO.output(MOT_PIN6,0)
                             GPIO.output(PLANETARIUM_LED,1)
                             event1.clear()
