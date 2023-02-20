@@ -166,7 +166,7 @@ class ScanDelegate(DefaultDelegate):
                             # プラネタリウムを上下するモーターを反転する
                             GPIO.output(MOT_PIN5,0)
                             GPIO.output(MOT_PIN6,1)
-                            for i in range(60):
+                            for i in range(15):
                                 print(i)
                                 sleep(1)
                             GPIO.output(MOT_PIN5,0)
@@ -190,7 +190,7 @@ class ScanDelegate(DefaultDelegate):
                             # プラネタリウムを上下するモーターを正転する
                             GPIO.output(MOT_PIN5,1)
                             GPIO.output(MOT_PIN6,0)
-                            for i in range(60):
+                            for i in range(15):
                                 print(i)
                                 sleep(1)
                             GPIO.output(MOT_PIN5,0)
