@@ -20,7 +20,7 @@ MOT_PIN2 = 24
 MOT_PIN3 = 12
 MOT_PIN4 = 16
 # プラネタリウムを上下させるモーターに使用するピン
-MOT_PIN5 = 13
+MOT_PIN5 = 5
 MOT_PIN6 = 6
 # 各LEDにしようするピン
 SETUP_LED = 17
@@ -155,7 +155,7 @@ class ScanDelegate(DefaultDelegate):
                         if(data == 0):
                             print('Button off')
                             GPIO.output(PLANETARIUM_LED,0)
-                            
+
                             # プラネタリウムを上下するモーターを反転する
                             GPIO.output(MOT_PIN5,0)
                             GPIO.output(MOT_PIN6,1)
