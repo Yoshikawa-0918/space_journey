@@ -157,7 +157,7 @@ class ScanDelegate(DefaultDelegate):
                             # くちばしのモーターを反転する
                             GPIO.output(MOT_PIN3,0)
                             GPIO.output(MOT_PIN4,1)
-                            for i in range(10):
+                            for i in range(8):
                                 print(i)
                                 sleep(1)
                             GPIO.output(MOT_PIN3,0)
@@ -181,7 +181,7 @@ class ScanDelegate(DefaultDelegate):
                             # くちばしのモーターを正転する
                             GPIO.output(MOT_PIN3,1)
                             GPIO.output(MOT_PIN4,0)
-                            for i in range(10):
+                            for i in range(8):
                                 print(i)
                                 sleep(1)
                             GPIO.output(MOT_PIN3,0)
