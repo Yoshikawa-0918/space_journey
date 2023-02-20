@@ -154,15 +154,8 @@ class ScanDelegate(DefaultDelegate):
                         print('Num: ', seq)
                         if(data == 0):
                             print('Button off')
-                            # くちばしのモーターを反転する
-                            GPIO.output(MOT_PIN3,0)
-                            GPIO.output(MOT_PIN4,1)
-                            for i in range(8):
-                                print(i)
-                                sleep(1)
-                            GPIO.output(MOT_PIN3,0)
-                            GPIO.output(MOT_PIN4,0)
-
+                            GPIO.output(PLANETARIUM_LED,0)
+                            
                             # プラネタリウムを上下するモーターを反転する
                             GPIO.output(MOT_PIN5,0)
                             GPIO.output(MOT_PIN6,1)
@@ -171,7 +164,15 @@ class ScanDelegate(DefaultDelegate):
                                 sleep(1)
                             GPIO.output(MOT_PIN5,0)
                             GPIO.output(MOT_PIN6,0)
-                            GPIO.output(PLANETARIUM_LED,0)
+
+                            # くちばしのモーターを反転する
+                            GPIO.output(MOT_PIN3,0)
+                            GPIO.output(MOT_PIN4,1)
+                            for i in range(8):
+                                print(i)
+                                sleep(1)
+                            GPIO.output(MOT_PIN3,0)
+                            GPIO.output(MOT_PIN4,0)
                             print("Button off 終了")
                         elif(data == 1):
                             print('Button On')
