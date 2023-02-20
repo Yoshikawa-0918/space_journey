@@ -42,7 +42,7 @@ GPIO.setUP(PLANETARIUM_LED, GPIO.OUT)
 
 
 player = vlc.MediaListPlayer()
-mediaList = vlc.MediaList(["music.mp3"])
+mediaList = vlc.MediaList(["/home/pi/signal/music.mp3"])
 player.set_media_list(mediaList)
 player.set_playback_mode(vlc.PlaybackMode.loop)
 
