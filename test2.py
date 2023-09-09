@@ -22,7 +22,7 @@ MOT_PIN4 = 16
 # プラネタリウムを上下させるモーターに使用するピン
 MOT_PIN5 = 5
 MOT_PIN6 = 6
-# 各LEDにしようするピン
+# 各LEDに使用するピン
 SETUP_LED = 17
 ERROR_LED = 27
 BUTTON_ERROR = 26
